@@ -29,6 +29,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Credits
 
-- [Sebi](https://sebilune.dev/) for website inspiration
+- [Sebi](https://sebilune.dev/) for website inspiration 
+-[Catppuccin Mocha](https://catppuccin.com) for the color palette
 - [OpenMoji](https://openmoji.org/) for the Favicon icon
 - [DevIcon](https://devicon.dev/) for the technology SVGs

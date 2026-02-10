@@ -18,9 +18,9 @@ function App() {
       <DotPattern
         width={30}
         height={30}
-        className="fixed inset-0 w-full h-full opacity-50 pointer-events-none dark:opacity-20 -z-10"
+        className="fixed inset-0 w-full h-full opacity-50 pointer-events-none dark:opacity-20 z-0"
       />
-      <main className="relative flex flex-col flex-1 text-zinc-700 dark:text-neutral-300">
+      <main className="relative z-10 flex flex-col flex-1 text-zinc-700 dark:text-neutral-300">
         <article className="container relative max-w-3xl px-10 mx-auto mt-10 mb-10 sm:mt-28 sm:mb-28">
           <div className="mb-12">
             <BlurFade delay={0} direction="up" blur="3px">
@@ -45,7 +45,7 @@ function App() {
           </div>
           <div className="mb-12">
             <BlurFade delay={0.75} direction="up" blur="3px">
-              <h1 className="mb-3 text-xl font-semibold">Now</h1>
+              <h1 className="mb-3 text-xl font-semibold text-[#cdd6f4]">Now</h1>
             </BlurFade>
             <BlurFade delay={0.9} direction="up" blur="3px">
               <Now />
@@ -53,7 +53,9 @@ function App() {
           </div>
           <div>
             <BlurFade delay={1.05} direction="up" blur="3px">
-              <h1 className="mb-3 text-xl font-semibold">Connect</h1>
+              <h1 className="mb-3 text-xl font-semibold text-[#cdd6f4]">
+                Connect
+              </h1>
             </BlurFade>
             <BlurFade delay={1.2} direction="up" blur="3px">
               <Contact />
@@ -62,7 +64,9 @@ function App() {
         </article>
         <GojoCatSticky />
       </main>
-      <Footer />
+      <div className="relative z-10">
+        <Footer />
+      </div>
     </div>
   );
 }

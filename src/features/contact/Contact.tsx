@@ -3,7 +3,7 @@ import { BoxReveal } from "@/components/magicui/box-reveal";
 
 export function Contact() {
   return (
-    <div className="font-mono">
+    <div className="font-mono text-[#cdd6f4]">
       Reach me at&nbsp;
       <BoxReveal boxColor="#b4befe">
         <Link color="lavender" link="mailto:andy-dam@outlook.com">

@@ -60,10 +60,10 @@ export function Projects() {
 
   return (
     <div className="flex flex-col flex-1 max-w-md gap-3">
-      <h1 className="text-xl font-semibold">Projects</h1>
+      <h1 className="text-xl font-semibold text-[#cdd6f4]">Projects</h1>
       {projects.map((project, index) => (
         <div key={index}>
-          <h1 className="mb-1 font-semibold tracking-wider">
+          <h1 className="mb-1 font-semibold tracking-wider text-[#cdd6f4]">
             <BoxReveal boxColor={project.boxColor} delay={project.delay}>
               <div className="inline-flex items-center group/title">
                 {project.link ? (
@@ -105,9 +105,7 @@ export function Projects() {
               </div>
             </BoxReveal>
           </h1>
-          <p className="font-mono text-neutral-500 dark:text-neutral-400">
-            {project.desc}
-          </p>
+          <p className="font-mono text-[#bac2de]">{project.desc}</p>
         </div>
       ))}
     </div>
