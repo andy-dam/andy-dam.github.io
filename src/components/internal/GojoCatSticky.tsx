@@ -32,7 +32,7 @@ export function GojoCatSticky() {
         style={{ width: 500, height: 500 }}
       >
         <DotLottieReact
-          src="/animations/lottie/Neko Gojo Satoru.lottie"
+          src={`${import.meta.env.BASE_URL}animations/lottie/Neko Gojo Satoru.lottie`}
           autoplay
           loop={false}
           className="w-[500px] h-[500px] opacity-[0.12] dark:opacity-[0.08]"

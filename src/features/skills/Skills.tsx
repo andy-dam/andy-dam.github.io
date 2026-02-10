@@ -35,7 +35,7 @@ export function Skills() {
           {outer.map(({ name, scale = 1.0 }) => (
             <img
               key={name}
-              src={`/svg/logos/${name}.svg`}
+              src={`${import.meta.env.BASE_URL}svg/logos/${name}.svg`}
               alt={name}
               width={100 * scale}
               height={100 * scale}
@@ -47,7 +47,7 @@ export function Skills() {
           {inner.map(({ name, scale = 1.0 }) => (
             <img
               key={name}
-              src={`/svg/logos/${name}.svg`}
+              src={`${import.meta.env.BASE_URL}svg/logos/${name}.svg`}
               alt={name}
               width={100 * scale}
               height={100 * scale}
