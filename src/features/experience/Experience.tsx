@@ -4,7 +4,6 @@ interface Experience {
   company: string;
   position: string;
   date: string;
-  location: string;
   description: string;
   boxColor: string;
   delay?: number;
@@ -16,9 +15,8 @@ export function Experience() {
       company: "Paycom",
       position: "Software Development Intern",
       date: "May 2025 - Aug 2025",
-      location: "Irving, TX",
       description:
-        "Built a full-stack survey application to help the company take control of their own data instead of relying on external vendors. Used React.js and TypeScript on the frontend, .NET Core and MySQL on the backend. Working across the full stack from API design to user interface was really rewarding.",
+        "Built a full-stack anonymous survey application to help the company take control of their own data instead of relying on external vendors. Used React.js and TypeScript on the frontend, .NET Core and MySQL on the backend. Working across the full stack from API design to user interface helped me understand the overall development process.",
       boxColor: "#a6e3a1",
       delay: 0.2,
     },
