@@ -9,8 +9,8 @@ export function Intro({ className }: IntroProps) {
         Bridging the gap between vision and execution.
       </span>
       <span className="font-mono">
-        &nbsp;Senior Computer Science student at UT Dallas, specialized in
-        full-stack development, machine learning, and building scalable software
+        &nbsp;Master's Computer Science student at UT Dallas, specialized in
+        back-end and full-stack development, machine learning, and building scalable software
         solutions.
       </span>
     </p>

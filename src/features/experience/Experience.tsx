@@ -12,6 +12,24 @@ interface Experience {
 export function Experience() {
   const experiences: Experience[] = [
     {
+      company: "Visa",
+      position: "Software Engineer Intern",
+      date: "May 2026 - Aug 2026",
+      description:
+        "Currently in progress!",
+      boxColor: "#f9e2af",
+      delay: 0.2,
+    },
+    {
+      company: "Stealth Startup",
+      position: "Software Engineer Intern",
+      date: "Jan 2026 - Present",
+      description:
+        "Currently building, stay tuned...",
+      boxColor: "#94e2d5",
+      delay: 0.2,
+    },
+    {
       company: "Paycom",
       position: "Software Development Intern",
       date: "May 2025 - Aug 2025",
@@ -20,6 +38,7 @@ export function Experience() {
       boxColor: "#a6e3a1",
       delay: 0.2,
     },
+    
   ];
 
   return (
@@ -31,7 +50,10 @@ export function Experience() {
             <BoxReveal boxColor={exp.boxColor} delay={exp.delay}>
               <div className="group/title">
                 <h2 className="font-semibold tracking-wider text-[#cdd6f4]">
-                  <span className="tracking-wider underline transition-all duration-200 decoration-green decoration-2 underline-offset-4 group-hover/title:decoration-3">
+                  <span
+                    className="tracking-wider underline transition-all duration-200 decoration-2 underline-offset-4 group-hover/title:decoration-[3px]"
+                    style={{ textDecorationColor: exp.boxColor }}
+                  >
                     {exp.company}
                   </span>
                   <span className="mx-2 text-[#cdd6f4] font-normal">•</span>

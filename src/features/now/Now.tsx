@@ -2,12 +2,7 @@ export function Now() {
   return (
     <div className="font-mono text-[#cdd6f4]">
       <p className="mb-1 pb-1">
-        Currently pursuing my Bachelor's degree in{" "}
-        <span className="font-bold tracking-wider font-newsreader">
-          Computer Science
-        </span>{" "}
-        at UT Dallas, expected May 2026. Also concurrently completing a Master's
-        degree in{" "}
+        Currently pursuing my Master's degree in{" "}
         <span className="font-bold tracking-wider font-newsreader">
           Computer Science
         </span>{" "}
@@ -15,16 +10,15 @@ export function Now() {
         <span className="font-bold tracking-wider font-newsreader">
           Intelligent Systems
         </span>{" "}
-        (AI/ML) track, expected May 2027. Recently completed a software
-        development internship at&nbsp;
+        (AI/ML) track, expected May 2027. Currently working at&nbsp;
+        <span className="font-bold tracking-wider font-newsreader">Visa</span>
+        &nbsp;as a Software Engineer Intern for this summer and helping build a <span className="font-bold tracking-wider font-newsreader">Stealth Startup</span>. Previously worked at&nbsp;
         <span className="font-bold tracking-wider font-newsreader">Paycom</span>
-        &nbsp;building full-stack enterprise solutions.
+        &nbsp;as a Software Development Intern.
       </p>
       <p>
-        Focused on full-stack development, machine learning, and building
-        scalable systems. Currently learning Next.js, FastAPI, Postgres, Docker,
-        and PyTorch for something exciting in the future (so stay tuned!).
-        Always exploring new technologies and best practices.
+        Focused on back-end development, machine learning, and building
+        scalable systems. Always exploring new technologies and best practices.
       </p>
     </div>
   );
