@@ -18,7 +18,7 @@ export function Experience() {
       description:
         "Currently in progress!",
       boxColor: "#f9e2af",
-      delay: 0.2,
+      delay: 0.1,
     },
     {
       company: "Stealth Startup",

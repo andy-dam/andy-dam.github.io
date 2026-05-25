@@ -40,21 +40,21 @@ export function Projects() {
       code: "https://github.com/andy-dam/song-mood-classifier",
       color: "flamingo",
       boxColor: "#f2cdcd",
-      delay: 0.4,
+      delay: 0.1,
     },
     {
       name: "FindMyFlight",
       desc: "Flight information website with real-time queries using React and Firebase. Features HTML form validation and Express server for REST API calls.",
       color: "pink",
       boxColor: "#f5c2e7",
-      delay: 0.3,
+      delay: 0.2,
     },
     {
       name: "Neural Image Classifier",
       desc: "Designed and trained Multilayer Perceptron and CNN architectures achieving 99% accuracy on MNIST and 74% on CIFAR-10 datasets.",
       color: "mauve",
       boxColor: "#cba6f7",
-      delay: 0.2,
+      delay: 0.3,
     },
   ];
 
