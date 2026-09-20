@@ -36,7 +36,7 @@ export function Projects() {
     {
       name: "Tracen Replay",
       desc: "Turns a screen recording of an Umamusume career into a turn-by-turn ledger of stats, skill points, hints and races, each line tied to the frame that proves it. Python OCR pipeline with a result-card reader trained from scratch, Go service, Vue client, hosted on Azure with queue-driven analysis jobs.",
-      link: "https://tracen-api.bluebay-878de3c5.northcentralus.azurecontainerapps.io/",
+      link: "https://tracen-replay.bluebay-878de3c5.northcentralus.azurecontainerapps.io/",
       code: "https://github.com/andy-dam/tracen-replay",
       color: "mauve",
       boxColor: "#cba6f7",
