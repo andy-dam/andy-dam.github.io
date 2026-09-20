@@ -34,26 +34,28 @@ export function Projects() {
 
   const projects: Project[] = [
     {
+      name: "Tracen Replay",
+      desc: "Turns a screen recording of an Umamusume career into a turn-by-turn ledger of stats, skill points, hints and races, each line tied to the frame that proves it. Python OCR pipeline with a result-card reader trained from scratch, Go service, Vue client, hosted on Azure with queue-driven analysis jobs.",
+      link: "https://tracen-api.bluebay-878de3c5.northcentralus.azurecontainerapps.io/",
+      code: "https://github.com/andy-dam/tracen-replay",
+      color: "mauve",
+      boxColor: "#cba6f7",
+      delay: 0.1,
+    },
+    {
       name: "Song Mood Classifier",
       desc: "ML model trained on 27K songs using Spotify API to classify 4 mood categories with 92% validation accuracy. Interactive Flask web application.",
       link: "https://github.com/andy-dam/song-mood-classifier",
       code: "https://github.com/andy-dam/song-mood-classifier",
       color: "flamingo",
       boxColor: "#f2cdcd",
-      delay: 0.1,
+      delay: 0.2,
     },
     {
       name: "FindMyFlight",
       desc: "Flight information website with real-time queries using React and Firebase. Features HTML form validation and Express server for REST API calls.",
       color: "pink",
       boxColor: "#f5c2e7",
-      delay: 0.2,
-    },
-    {
-      name: "Neural Image Classifier",
-      desc: "Designed and trained Multilayer Perceptron and CNN architectures achieving 99% accuracy on MNIST and 74% on CIFAR-10 datasets.",
-      color: "mauve",
-      boxColor: "#cba6f7",
       delay: 0.3,
     },
   ];
