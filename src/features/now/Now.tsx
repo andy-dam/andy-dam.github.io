@@ -10,11 +10,15 @@ export function Now() {
         <span className="font-bold tracking-wider font-newsreader">
           Intelligent Systems
         </span>{" "}
-        (AI/ML) track, expected May 2027. Currently working at&nbsp;
+        (AI/ML) track, expected May 2027. Back at school after a summer at&nbsp;
         <span className="font-bold tracking-wider font-newsreader">Visa</span>
-        &nbsp;as a Software Engineer Intern for this summer and helping build a <span className="font-bold tracking-wider font-newsreader">Stealth Startup</span>. Previously worked at&nbsp;
+        &nbsp;as a Software Engineer Intern, and before that&nbsp;
+        <span className="font-bold tracking-wider font-newsreader">
+          Cavall Labs
+        </span>
+        &nbsp;and&nbsp;
         <span className="font-bold tracking-wider font-newsreader">Paycom</span>
-        &nbsp;as a Software Development Intern.
+        .
       </p>
       <p>
         Focused on back-end development, machine learning, and building

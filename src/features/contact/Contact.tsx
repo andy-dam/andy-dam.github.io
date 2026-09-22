@@ -10,10 +10,19 @@ export function Contact() {
           andy-dam@outlook.com
         </Link>
       </BoxReveal>
-      &nbsp;or connect on&nbsp;
+      ,&nbsp;
       <BoxReveal boxColor="#b4befe">
         <Link color="lavender" link="https://linkedin.com/in/andydam">
           LinkedIn
+        </Link>
+      </BoxReveal>
+      , or my&nbsp;
+      <BoxReveal boxColor="#b4befe">
+        <Link
+          color="lavender"
+          link={`${import.meta.env.BASE_URL}andy-dam-resume.pdf`}
+        >
+          resume
         </Link>
       </BoxReveal>
     </div>

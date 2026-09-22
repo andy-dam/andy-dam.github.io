@@ -35,7 +35,7 @@ export function Projects() {
   const projects: Project[] = [
     {
       name: "Tracen Replay",
-      desc: "Turns a screen recording of an Umamusume career into a turn-by-turn ledger of stats, skill points, hints and races, each line tied to the frame that proves it. Python OCR pipeline with a result-card reader trained from scratch, Go service, Vue client, hosted on Azure with queue-driven analysis jobs.",
+      desc: "Reads a screen recording of an Umamusume career and rebuilds it as a turn-by-turn report, every number tied to the frame it came from. Python OCR with a digit reader trained from scratch, behind a Go service and a Vue client.",
       link: "https://tracen-replay.bluebay-878de3c5.northcentralus.azurecontainerapps.io/",
       code: "https://github.com/andy-dam/tracen-replay",
       color: "mauve",

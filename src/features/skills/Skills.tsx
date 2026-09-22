@@ -1,9 +1,9 @@
 import { OrbitingCircles } from "@/components/magicui/orbiting-circles";
 
 const logos = [
-  { name: "tailwindcss", scale: 1.0 }, // Tailwind CSS
+  { name: "go", scale: 1.0 }, // Go
   { name: "node", scale: 1.0 }, // Node.js
-  { name: "numpy", scale: 1.0 }, // Conda
+  { name: "vue", scale: 1.0 }, // Vue.js
   { name: "docker", scale: 0.9 }, // Docker
   { name: "git", scale: 0.9 }, // Git
   { name: "github", scale: 0.9 }, // GitHub
@@ -12,7 +12,7 @@ const logos = [
   { name: "pandas", scale: 1.0 }, // pandas
   { name: "linux", scale: 1.2 }, // UNIX/Linux
   { name: "spark", scale: 1.1 }, // Spark
-  { name: "bash", scale: 1.2 }, // Bash
+  { name: "vitejs", scale: 1.0 }, // Vite
   { name: "next", scale: 1 }, // Next.js
   { name: "pytorch", scale: 1.0 }, // PyTorch
   { name: "java", scale: 1.15 }, // Java

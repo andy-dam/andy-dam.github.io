@@ -1,3 +1,5 @@
+import { ArrowUpRight } from "lucide-react";
+
 import { BoxReveal } from "@/components/magicui/box-reveal";
 
 interface Experience {
@@ -7,6 +9,7 @@ interface Experience {
   description: string;
   boxColor: string;
   delay?: number;
+  link?: string;
 }
 
 export function Experience() {
@@ -16,18 +19,19 @@ export function Experience() {
       position: "Software Engineer Intern",
       date: "May 2026 - Aug 2026",
       description:
-        "Currently in progress!",
+        "Built a regression-triage dashboard for QA and release engineers, with React and Vite on the frontend and Node.js and Express behind it. Added a two-stage LLM pipeline that reads test reports and explains why a run failed, replacing a manual hunt through Jenkins and Artifactory.",
       boxColor: "#f9e2af",
       delay: 0.1,
     },
     {
-      company: "Stealth Startup",
+      company: "Cavall Labs",
       position: "Software Engineer Intern",
-      date: "Jan 2026 - Present",
+      date: "Jan 2026 - May 2026",
       description:
-        "Currently building, stay tuned...",
+        "Built the FastAPI backend behind an AI-driven chemistry platform, with GPU work on background workers and PostgreSQL as the job queue.",
       boxColor: "#94e2d5",
       delay: 0.2,
+      link: "https://www.cavall.ai/",
     },
     {
       company: "Paycom",
@@ -50,12 +54,29 @@ export function Experience() {
             <BoxReveal boxColor={exp.boxColor} delay={exp.delay}>
               <div className="group/title">
                 <h2 className="font-semibold tracking-wider text-[#cdd6f4]">
-                  <span
-                    className="tracking-wider underline transition-all duration-200 decoration-2 underline-offset-4 group-hover/title:decoration-[3px]"
-                    style={{ textDecorationColor: exp.boxColor }}
-                  >
-                    {exp.company}
-                  </span>
+                  {exp.link ? (
+                    <a
+                      href={exp.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="tracking-wider underline transition-all duration-200 decoration-2 underline-offset-4 group-hover/title:decoration-[3px]"
+                      style={{ textDecorationColor: exp.boxColor }}
+                    >
+                      {exp.company}
+                      <ArrowUpRight
+                        size={18}
+                        className="inline-block ml-0.5 align-text-top no-underline"
+                        style={{ color: exp.boxColor }}
+                      />
+                    </a>
+                  ) : (
+                    <span
+                      className="tracking-wider underline transition-all duration-200 decoration-2 underline-offset-4 group-hover/title:decoration-[3px]"
+                      style={{ textDecorationColor: exp.boxColor }}
+                    >
+                      {exp.company}
+                    </span>
+                  )}
                   <span className="mx-2 text-[#cdd6f4] font-normal">•</span>
                   <span className="font-normal text-[#cdd6f4]">
                     {exp.position}
