@@ -17,7 +17,7 @@ function App() {
       <CircuitDots
         spacing={30}
         warpTarget=".glass"
-        className="z-0 opacity-80 dark:opacity-75"
+        className="z-0 opacity-70 dark:opacity-50"
       />
       <main className="relative z-10 flex flex-col flex-1 text-zinc-700 dark:text-neutral-300">
         <article className="container relative max-w-4xl px-4 mx-auto mt-10 mb-10 sm:px-6 sm:mt-28 sm:mb-28">
