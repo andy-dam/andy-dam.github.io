@@ -1,7 +1,6 @@
 import { BlurFade } from "@/components/magicui/blur-fade";
-import { DotPattern } from "@/components/magicui/dot-pattern";
 
-import { GojoCatSticky } from "@/components/internal/GojoCatSticky";
+import { CircuitDots } from "@/components/internal/CircuitDots";
 
 import { Header } from "@/features/header";
 import { Intro } from "@/features/intro";
@@ -15,11 +14,7 @@ import { Footer } from "@/features/footer";
 function App() {
   return (
     <div className="relative flex flex-col w-full min-h-screen overflow-x-hidden">
-      <DotPattern
-        width={30}
-        height={30}
-        className="fixed inset-0 w-full h-full opacity-50 pointer-events-none dark:opacity-20 z-0"
-      />
+      <CircuitDots spacing={30} className="z-0 opacity-70 dark:opacity-50" />
       <main className="relative z-10 flex flex-col flex-1 text-zinc-700 dark:text-neutral-300">
         <article className="container relative max-w-3xl px-10 mx-auto mt-10 mb-10 sm:mt-28 sm:mb-28">
           <div className="mb-12">
@@ -62,7 +57,6 @@ function App() {
             </BlurFade>
           </div>
         </article>
-        <GojoCatSticky />
       </main>
       <div className="relative z-10">
         <Footer />
