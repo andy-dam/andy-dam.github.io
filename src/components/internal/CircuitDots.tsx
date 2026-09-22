@@ -234,25 +234,39 @@ export function CircuitDots({
         const hx = x + dx * charge.progress;
         const hy = y + dy * charge.progress;
 
-        // The tail: older segments thinner and fainter.
+        // The tail fades by distance behind the head, measured along the path,
+        // not by which segment it is. The head moves continuously, so every
+        // point's distance does too, and nothing steps when a hop lands. The
+        // fade reaches zero exactly where the oldest kept dot sits, so dropping
+        // that dot is invisible.
         const tail = charge.trail;
-        for (let i = 1; i < tail.length; i++) {
-          const age = (i + 1) / tail.length;
-          ctx.strokeStyle = `rgba(${TRACE}, ${0.42 * age * age})`;
-          ctx.lineWidth = 0.6 + 0.9 * age;
+        const reach = (TRAIL - 1) * spacing;
+        const fade = (d: number) => Math.max(0, 1 - d / reach);
+        const points: Array<{ x: number; y: number; d: number }> = [
+          { x: hx, y: hy, d: 0 },
+        ];
+        let d = charge.progress * spacing;
+        for (let i = tail.length - 1; i >= 0; i--) {
+          points.push({ x: tail[i].col * spacing, y: tail[i].row * spacing, d });
+          d += spacing;
+        }
+        for (let i = 1; i < points.length; i++) {
+          const a = points[i - 1];
+          const b = points[i];
+          const fa = fade(a.d);
+          const fb = fade(b.d);
+          if (fa <= 0) break;
+          if (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) < 0.01) continue;
+          const line = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+          line.addColorStop(0, `rgba(${TRACE}, ${0.4 * fa * fa})`);
+          line.addColorStop(1, `rgba(${TRACE}, ${0.4 * fb * fb})`);
+          ctx.strokeStyle = line;
+          ctx.lineWidth = 0.6 + 0.6 * (fa + fb) / 2;
           ctx.beginPath();
-          ctx.moveTo(tail[i - 1].col * spacing, tail[i - 1].row * spacing);
-          ctx.lineTo(tail[i].col * spacing, tail[i].row * spacing);
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
           ctx.stroke();
         }
-
-        // The edge the head is crossing right now.
-        ctx.strokeStyle = `rgba(${TRACE}, 0.34)`;
-        ctx.lineWidth = 1.1;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(hx, hy);
-        ctx.stroke();
 
         const head = ctx.createRadialGradient(hx, hy, 0, hx, hy, spacing * 0.3);
         head.addColorStop(0, `rgba(${LIT}, 0.16)`);
