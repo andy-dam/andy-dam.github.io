@@ -38,7 +38,7 @@ export function Experience() {
       position: "Software Development Intern",
       date: "May 2025 - Aug 2025",
       description:
-        "Built a full-stack anonymous survey application to help the company take control of their own data instead of relying on external vendors. Used React.js and TypeScript on the frontend, .NET Core and MySQL on the backend. Working across the full stack from API design to user interface helped me understand the overall development process.",
+        "Built a full-stack anonymous survey application that brought employee feedback in-house in place of an outside vendor, with React and TypeScript on the frontend and .NET Core and MySQL behind it.",
       boxColor: "#a6e3a1",
       delay: 0.2,
     },

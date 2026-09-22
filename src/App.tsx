@@ -9,7 +9,6 @@ import { Projects } from "@/features/projects";
 import { Experience } from "@/features/experience";
 import { Now } from "@/features/now";
 import { Contact } from "@/features/contact";
-import { Footer } from "@/features/footer";
 
 function App() {
   return (
@@ -64,9 +63,6 @@ function App() {
           </div>
         </article>
       </main>
-      <div className="relative z-10">
-        <Footer />
-      </div>
     </div>
   );
 }

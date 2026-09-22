@@ -12,6 +12,7 @@ interface Project {
   color: LinkColor;
   boxColor: string;
   delay?: number;
+  stack: string[];
 }
 
 export function Projects() {
@@ -35,28 +36,31 @@ export function Projects() {
   const projects: Project[] = [
     {
       name: "Tracen Replay",
-      desc: "Reads a screen recording of an Umamusume career and rebuilds it as a turn-by-turn report, every number tied to the frame it came from. Python OCR with a digit reader trained from scratch, behind a Go service and a Vue client.",
+      desc: "Reads a screen recording of an Umamusume career and rebuilds it as a turn-by-turn report, every number tied to the frame it came from, with a digit reader trained from scratch.",
       link: "https://tracen-replay.bluebay-878de3c5.northcentralus.azurecontainerapps.io/",
       code: "https://github.com/andy-dam/tracen-replay",
       color: "mauve",
       boxColor: "#cba6f7",
       delay: 0.1,
+      stack: ["Go", "Python", "Vue", "PyTorch", "Azure"],
     },
     {
       name: "Song Mood Classifier",
-      desc: "ML model trained on 27K songs using Spotify API to classify 4 mood categories with 92% validation accuracy. Interactive Flask web application.",
+      desc: "Sorts songs into four moods with 92% validation accuracy, trained on 27K tracks and queried by name.",
       link: "https://github.com/andy-dam/song-mood-classifier",
       code: "https://github.com/andy-dam/song-mood-classifier",
       color: "flamingo",
       boxColor: "#f2cdcd",
       delay: 0.2,
+      stack: ["Python", "scikit-learn", "Flask", "Spotify API"],
     },
     {
       name: "FindMyFlight",
-      desc: "Flight information website with real-time queries using React and Firebase. Features HTML form validation and Express server for REST API calls.",
+      desc: "Flight information site with real-time queries and form validation.",
       color: "pink",
       boxColor: "#f5c2e7",
       delay: 0.3,
+      stack: ["React", "Firebase", "Express"],
     },
   ];
 
@@ -107,6 +111,20 @@ export function Projects() {
               </div>
             </BoxReveal>
           </h1>
+          <ul className="flex flex-wrap gap-1.5 mb-2" aria-label="Built with">
+            {project.stack.map((tech) => (
+              <li
+                key={tech}
+                className="px-2 py-0.5 text-xs rounded-full"
+                style={{
+                  color: project.boxColor,
+                  backgroundColor: `${project.boxColor}1f`,
+                }}
+              >
+                {tech}
+              </li>
+            ))}
+          </ul>
           <p className="font-mono text-[#bac2de]">{project.desc}</p>
         </div>
       ))}
