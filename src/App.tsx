@@ -16,7 +16,8 @@ function App() {
     <div className="relative flex flex-col w-full min-h-screen overflow-x-hidden">
       <CircuitDots spacing={30} className="z-0 opacity-70 dark:opacity-50" />
       <main className="relative z-10 flex flex-col flex-1 text-zinc-700 dark:text-neutral-300">
-        <article className="container relative max-w-3xl px-10 mx-auto mt-10 mb-10 sm:mt-28 sm:mb-28">
+        <article className="container relative max-w-3xl px-4 mx-auto mt-10 mb-10 sm:px-6 sm:mt-28 sm:mb-28">
+          <div className="glass relative overflow-hidden rounded-[28px] px-6 py-10 sm:px-12 sm:py-14">
           <div className="mb-12">
             <BlurFade delay={0} direction="up" blur="3px">
               <Header className="mb-6" />
@@ -55,6 +56,7 @@ function App() {
             <BlurFade delay={1.2} direction="up" blur="3px">
               <Contact />
             </BlurFade>
+          </div>
           </div>
         </article>
       </main>
