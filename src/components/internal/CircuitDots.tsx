@@ -27,14 +27,15 @@ interface Charge {
 }
 
 const BASE = "rgba(205, 214, 244, 0.18)";
-const LIT = "205, 214, 244";
-const TRACE = "186, 194, 222";
+// Lavender #b4befe, the colour under the name in the header.
+const LIT = "180, 190, 254";
+const TRACE = "180, 190, 254";
 
 export function CircuitDots({
   spacing = 30,
   radius = 1,
-  interval = 0.45,
-  maxCharges = 14,
+  interval = 0.18,
+  maxCharges = 26,
   className,
 }: CircuitDotsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
