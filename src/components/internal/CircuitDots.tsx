@@ -28,6 +28,18 @@ interface Charge {
   trail: Array<{ col: number; row: number }>;
 }
 
+interface Wave {
+  x: number;
+  y: number;
+  /** Seconds since it started. */
+  age: number;
+  /** Seconds it lasts. */
+  life: number;
+  /** Radius in pixels it reaches at the end of its life. */
+  reach: number;
+  strength: number;
+}
+
 /** Dots of tail kept behind a charge. */
 const TRAIL = 7;
 
@@ -60,6 +72,7 @@ export function CircuitDots({
     // Dots that are lit right now, keyed by "col,row", holding their decay.
     const glow = new Map<string, number>();
     const charges: Charge[] = [];
+    const waves: Wave[] = [];
 
     const drawBase = () => {
       base = document.createElement("canvas");
@@ -98,6 +111,17 @@ export function CircuitDots({
       glow.set(`${col},${row}`, 1);
     };
 
+    const ripple = (
+      x: number,
+      y: number,
+      reach: number,
+      life: number,
+      strength: number,
+    ) => {
+      if (waves.length > 40) return;
+      waves.push({ x, y, age: 0, life, reach, strength });
+    };
+
     const spawn = () => {
       if (charges.length >= maxCharges) return;
       const col = Math.floor(Math.random() * (cols + 1));
@@ -110,7 +134,7 @@ export function CircuitDots({
         axis,
         step: Math.random() < 0.5 ? -1 : 1,
         progress: 0,
-        speed: 1.1 + Math.random() * 1.4,
+        speed: 0.45 + Math.random() * 0.5,
         hopsLeft: 5 + Math.floor(Math.random() * 8),
         trail: [{ col, row }],
       });
@@ -124,6 +148,7 @@ export function CircuitDots({
         else charge.row += charge.step;
         charge.hopsLeft -= 1;
         light(charge.col, charge.row);
+        ripple(charge.col * spacing, charge.row * spacing, spacing * 1.1, 0.9, 0.5);
         charge.trail.push({ col: charge.col, row: charge.row });
         if (charge.trail.length > TRAIL) charge.trail.shift();
         // A quarter turn now and then is what makes it read as a circuit.
@@ -140,6 +165,37 @@ export function CircuitDots({
       return charge.hopsLeft > 0 && !off;
     };
 
+    const headOf = (charge: Charge) => ({
+      x:
+        (charge.col + (charge.axis === "x" ? charge.step * charge.progress : 0)) *
+        spacing,
+      y:
+        (charge.row + (charge.axis === "y" ? charge.step * charge.progress : 0)) *
+        spacing,
+    });
+
+    /** Two heads meeting annihilate and throw a wave from the spot. */
+    const collide = () => {
+      const hit = spacing * 0.45;
+      for (let i = charges.length - 1; i >= 0; i--) {
+        const a = headOf(charges[i]);
+        for (let j = i - 1; j >= 0; j--) {
+          const b = headOf(charges[j]);
+          if (Math.abs(a.x - b.x) > hit || Math.abs(a.y - b.y) > hit) continue;
+          if (Math.hypot(a.x - b.x, a.y - b.y) > hit) continue;
+          const x = (a.x + b.x) / 2;
+          const y = (a.y + b.y) / 2;
+          ripple(x, y, spacing * 5.5, 1.6, 1);
+          ripple(x, y, spacing * 3, 1.1, 0.7);
+          light(Math.round(x / spacing), Math.round(y / spacing));
+          charges.splice(i, 1);
+          charges.splice(j, 1);
+          i -= 1;
+          break;
+        }
+      }
+    };
+
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (base) ctx.drawImage(base, 0, 0, canvas.width / dpr, canvas.height / dpr);
@@ -151,16 +207,17 @@ export function CircuitDots({
         const [col, row] = key.split(",").map(Number);
         const x = col * spacing;
         const y = row * spacing;
-        const halo = ctx.createRadialGradient(x, y, 0, x, y, spacing * 0.42 * value);
-        halo.addColorStop(0, `rgba(${LIT}, ${0.4 * value})`);
+        const reach = spacing * 0.26 * value;
+        const halo = ctx.createRadialGradient(x, y, 0, x, y, reach);
+        halo.addColorStop(0, `rgba(${LIT}, ${0.12 * value})`);
         halo.addColorStop(1, `rgba(${LIT}, 0)`);
         ctx.fillStyle = halo;
         ctx.beginPath();
-        ctx.arc(x, y, spacing * 0.42 * value, 0, Math.PI * 2);
+        ctx.arc(x, y, reach, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = `rgba(${LIT}, ${0.7 * value})`;
+        ctx.fillStyle = `rgba(${LIT}, ${0.34 * value})`;
         ctx.beginPath();
-        ctx.arc(x, y, radius + 1.2 * value, 0, Math.PI * 2);
+        ctx.arc(x, y, radius + 0.5 * value, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -187,24 +244,37 @@ export function CircuitDots({
         }
 
         // The edge the head is crossing right now.
-        ctx.strokeStyle = `rgba(${TRACE}, 0.55)`;
-        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = `rgba(${TRACE}, 0.34)`;
+        ctx.lineWidth = 1.1;
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(hx, hy);
         ctx.stroke();
 
-        const head = ctx.createRadialGradient(hx, hy, 0, hx, hy, spacing * 0.5);
-        head.addColorStop(0, `rgba(${LIT}, 0.55)`);
+        const head = ctx.createRadialGradient(hx, hy, 0, hx, hy, spacing * 0.3);
+        head.addColorStop(0, `rgba(${LIT}, 0.16)`);
         head.addColorStop(1, `rgba(${LIT}, 0)`);
         ctx.fillStyle = head;
         ctx.beginPath();
-        ctx.arc(hx, hy, spacing * 0.5, 0, Math.PI * 2);
+        ctx.arc(hx, hy, spacing * 0.3, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = `rgba(${LIT}, 0.95)`;
+        ctx.fillStyle = `rgba(${LIT}, 0.55)`;
         ctx.beginPath();
-        ctx.arc(hx, hy, radius + 1, 0, Math.PI * 2);
+        ctx.arc(hx, hy, radius + 0.7, 0, Math.PI * 2);
         ctx.fill();
+      }
+
+      // Rings: the small one each dot makes as a charge lands on it, and the
+      // bigger one two charges make when they meet.
+      for (const wave of waves) {
+        const t = wave.age / wave.life;
+        const r = wave.reach * (1 - (1 - t) * (1 - t));
+        if (r <= 0) continue;
+        ctx.strokeStyle = `rgba(${LIT}, ${wave.strength * 0.3 * (1 - t) * (1 - t)})`;
+        ctx.lineWidth = 1.2 * (1 - t) + 0.3;
+        ctx.beginPath();
+        ctx.arc(wave.x, wave.y, r, 0, Math.PI * 2);
+        ctx.stroke();
       }
 
       ctx.globalCompositeOperation = "source-over";
@@ -226,6 +296,12 @@ export function CircuitDots({
 
       for (let i = charges.length - 1; i >= 0; i--) {
         if (!advance(charges[i], dt)) charges.splice(i, 1);
+      }
+      collide();
+
+      for (let i = waves.length - 1; i >= 0; i--) {
+        waves[i].age += dt;
+        if (waves[i].age >= waves[i].life) waves.splice(i, 1);
       }
       for (const [key, value] of glow) {
         const next = value - dt * 0.45;
