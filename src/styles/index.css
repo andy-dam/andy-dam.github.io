@@ -178,9 +178,9 @@ body {
    which can displace pixels where CSS cannot. */
 @layer components {
   .glass {
-    background: rgba(24, 24, 37, 0.55);
-    backdrop-filter: blur(12px) saturate(140%);
-    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    background: rgba(24, 24, 37, 0.16);
+    backdrop-filter: blur(4px) saturate(150%) brightness(1.5);
+    -webkit-backdrop-filter: blur(4px) saturate(150%) brightness(1.5);
     border: 1px solid rgba(226, 232, 255, 0.08);
     box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.7);
     animation: glass-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;

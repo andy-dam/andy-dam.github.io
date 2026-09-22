@@ -45,14 +45,14 @@ interface Wave {
 /** Dots of tail kept behind a charge. */
 const TRAIL = 7;
 
-const BASE = "rgba(205, 214, 244, 0.18)";
+const BASE = "rgba(205, 214, 244, 0.42)";
 // Lavender #b4befe, the colour under the name in the header.
 const LIT = "180, 190, 254";
 const TRACE = "180, 190, 254";
 
 export function CircuitDots({
   spacing = 30,
-  radius = 1,
+  radius = 1.2,
   interval = 0.18,
   maxCharges = 26,
   warpTarget,

@@ -65,7 +65,7 @@ export function Projects() {
       <h1 className="text-xl font-semibold text-[#cdd6f4]">Projects</h1>
       {projects.map((project, index) => (
         <div key={index}>
-          <h1 className="mb-1 font-semibold tracking-wider text-[#cdd6f4]">
+          <h1 className="mb-1 font-semibold tracking-wider text-[#cdd6f4] whitespace-nowrap">
             <BoxReveal boxColor={project.boxColor} delay={project.delay}>
               <div className="inline-flex items-center group/title">
                 {project.link ? (
