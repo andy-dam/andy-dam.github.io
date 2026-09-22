@@ -22,6 +22,7 @@ export function Experience() {
         "Built a regression-triage dashboard for QA and release engineers, with a React and Vite frontend and a Node.js and Express backend. Added a two-stage LLM pipeline that reads test reports and explains why a run failed, replacing a manual hunt through Jenkins and Artifactory.",
       boxColor: "#f9e2af",
       delay: 0.1,
+      link: "https://www.linkedin.com/feed/update/urn:li:activity:7492625863134404609/",
     },
     {
       company: "Cavall Labs",
@@ -41,6 +42,7 @@ export function Experience() {
         "Built a full-stack anonymous survey application that brought employee feedback in-house in place of an outside vendor, with a React and TypeScript frontend and a .NET Core and MySQL backend.",
       boxColor: "#a6e3a1",
       delay: 0.2,
+      link: "https://www.linkedin.com/feed/update/urn:li:activity:7363669322348584960/",
     },
     
   ];

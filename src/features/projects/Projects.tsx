@@ -52,7 +52,7 @@ export function Projects() {
       color: "flamingo",
       boxColor: "#f2cdcd",
       delay: 0.2,
-      stack: ["Python", "scikit-learn", "Flask", "Spotify API"],
+      stack: ["Python", "scikit-learn", "Flask"],
     },
     {
       name: "FindMyFlight",
