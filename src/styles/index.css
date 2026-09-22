@@ -184,7 +184,6 @@ body {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     border: 1px solid rgba(49, 50, 68, 0.85); /* surface0 #313244 */
-    box-shadow: 0 20px 50px -24px rgba(17, 17, 27, 0.85); /* crust #11111b */
     animation: glass-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 

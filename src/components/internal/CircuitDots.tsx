@@ -42,8 +42,19 @@ interface Wave {
   strength: number;
 }
 
+/** A charge that has stopped, its tail still fading where it ended. */
+interface Ghost {
+  charge: Charge;
+  x: number;
+  y: number;
+  age: number;
+}
+
 /** Dots of tail kept behind a charge. */
 const TRAIL = 7;
+
+/** Seconds a stopped charge's tail takes to fizzle out. */
+const GHOST_LIFE = 1.4;
 
 const BASE = "rgba(205, 214, 244, 0.18)";
 // Lavender #b4befe, the colour under the name in the header.
@@ -76,6 +87,7 @@ export function CircuitDots({
     const glow = new Map<string, number>();
     const charges: Charge[] = [];
     const waves: Wave[] = [];
+    const ghosts: Ghost[] = [];
 
     const drawBase = () => {
       base = document.createElement("canvas");
@@ -107,6 +119,7 @@ export function CircuitDots({
       rows = Math.ceil(h / spacing);
       glow.clear();
       charges.length = 0;
+      ghosts.length = 0;
       drawBase();
     };
 
@@ -191,12 +204,57 @@ export function CircuitDots({
           ripple(x, y, spacing * 5.5, 1.6, 1);
           ripple(x, y, spacing * 3, 1.1, 0.7);
           light(Math.round(x / spacing), Math.round(y / spacing));
-          charges.splice(i, 1);
-          charges.splice(j, 1);
+          retire(charges.splice(i, 1)[0]);
+          retire(charges.splice(j, 1)[0]);
           i -= 1;
           break;
         }
       }
+    };
+
+    // The tail fades by distance behind the head, measured along the path,
+    // not by which segment it is. The head moves continuously, so every
+    // point's distance does too, and nothing steps when a hop lands. The fade
+    // reaches zero exactly where the oldest kept dot sits, so dropping that dot
+    // is invisible. `strength` scales the whole tail, for one fizzling out.
+    const drawTail = (charge: Charge, hx: number, hy: number, strength: number) => {
+      const tail = charge.trail;
+      const reach = (TRAIL - 1) * spacing;
+      const fade = (d: number) => Math.max(0, 1 - d / reach);
+      const points: Array<{ x: number; y: number; d: number }> = [
+        { x: hx, y: hy, d: 0 },
+      ];
+      let d = Math.hypot(
+        hx - tail[tail.length - 1].col * spacing,
+        hy - tail[tail.length - 1].row * spacing,
+      );
+      for (let i = tail.length - 1; i >= 0; i--) {
+        points.push({ x: tail[i].col * spacing, y: tail[i].row * spacing, d });
+        d += spacing;
+      }
+      for (let i = 1; i < points.length; i++) {
+        const a = points[i - 1];
+        const b = points[i];
+        const fa = fade(a.d);
+        const fb = fade(b.d);
+        if (fa <= 0) break;
+        if (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) < 0.01) continue;
+        const line = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+        line.addColorStop(0, `rgba(${TRACE}, ${0.4 * fa * fa * strength})`);
+        line.addColorStop(1, `rgba(${TRACE}, ${0.4 * fb * fb * strength})`);
+        ctx.strokeStyle = line;
+        ctx.lineWidth = 0.6 + (0.6 * (fa + fb)) / 2;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+    };
+
+    /** A stopped charge keeps drawing its tail, dimming, until it is gone. */
+    const retire = (charge: Charge) => {
+      const { x, y } = headOf(charge);
+      ghosts.push({ charge, x, y, age: 0 });
     };
 
     const draw = () => {
@@ -227,46 +285,8 @@ export function CircuitDots({
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       for (const charge of charges) {
-        const x = charge.col * spacing;
-        const y = charge.row * spacing;
-        const dx = charge.axis === "x" ? charge.step * spacing : 0;
-        const dy = charge.axis === "y" ? charge.step * spacing : 0;
-        const hx = x + dx * charge.progress;
-        const hy = y + dy * charge.progress;
-
-        // The tail fades by distance behind the head, measured along the path,
-        // not by which segment it is. The head moves continuously, so every
-        // point's distance does too, and nothing steps when a hop lands. The
-        // fade reaches zero exactly where the oldest kept dot sits, so dropping
-        // that dot is invisible.
-        const tail = charge.trail;
-        const reach = (TRAIL - 1) * spacing;
-        const fade = (d: number) => Math.max(0, 1 - d / reach);
-        const points: Array<{ x: number; y: number; d: number }> = [
-          { x: hx, y: hy, d: 0 },
-        ];
-        let d = charge.progress * spacing;
-        for (let i = tail.length - 1; i >= 0; i--) {
-          points.push({ x: tail[i].col * spacing, y: tail[i].row * spacing, d });
-          d += spacing;
-        }
-        for (let i = 1; i < points.length; i++) {
-          const a = points[i - 1];
-          const b = points[i];
-          const fa = fade(a.d);
-          const fb = fade(b.d);
-          if (fa <= 0) break;
-          if (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) < 0.01) continue;
-          const line = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
-          line.addColorStop(0, `rgba(${TRACE}, ${0.4 * fa * fa})`);
-          line.addColorStop(1, `rgba(${TRACE}, ${0.4 * fb * fb})`);
-          ctx.strokeStyle = line;
-          ctx.lineWidth = 0.6 + 0.6 * (fa + fb) / 2;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-        }
+        const { x: hx, y: hy } = headOf(charge);
+        drawTail(charge, hx, hy, 1);
 
         const head = ctx.createRadialGradient(hx, hy, 0, hx, hy, spacing * 0.3);
         head.addColorStop(0, `rgba(${LIT}, 0.16)`);
@@ -278,6 +298,32 @@ export function CircuitDots({
         ctx.fillStyle = `rgba(${LIT}, 0.55)`;
         ctx.beginPath();
         ctx.arc(hx, hy, radius + 0.7, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // A charge that has stopped leaves its tail where it was, fizzling out
+      // instead of vanishing: the whole trail dims and the head's glow with it.
+      for (const ghost of ghosts) {
+        const left = 1 - ghost.age / GHOST_LIFE;
+        const strength = left * left;
+        drawTail(ghost.charge, ghost.x, ghost.y, strength);
+        const halo = ctx.createRadialGradient(
+          ghost.x,
+          ghost.y,
+          0,
+          ghost.x,
+          ghost.y,
+          spacing * 0.3,
+        );
+        halo.addColorStop(0, `rgba(${LIT}, ${0.16 * strength})`);
+        halo.addColorStop(1, `rgba(${LIT}, 0)`);
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(ghost.x, ghost.y, spacing * 0.3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = `rgba(${LIT}, ${0.55 * strength})`;
+        ctx.beginPath();
+        ctx.arc(ghost.x, ghost.y, radius + 0.7 * left, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -377,10 +423,14 @@ export function CircuitDots({
       }
 
       for (let i = charges.length - 1; i >= 0; i--) {
-        if (!advance(charges[i], dt)) charges.splice(i, 1);
+        if (!advance(charges[i], dt)) retire(charges.splice(i, 1)[0]);
       }
       collide();
 
+      for (let i = ghosts.length - 1; i >= 0; i--) {
+        ghosts[i].age += dt;
+        if (ghosts[i].age >= GHOST_LIFE) ghosts.splice(i, 1);
+      }
       for (let i = waves.length - 1; i >= 0; i--) {
         waves[i].age += dt;
         if (waves[i].age >= waves[i].life) waves.splice(i, 1);
