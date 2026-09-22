@@ -19,7 +19,7 @@ export function Experience() {
       position: "Software Engineer Intern",
       date: "May 2026 - Aug 2026",
       description:
-        "Built a regression-triage dashboard for QA and release engineers, with React and Vite on the frontend and Node.js and Express behind it. Added a two-stage LLM pipeline that reads test reports and explains why a run failed, replacing a manual hunt through Jenkins and Artifactory.",
+        "Built a regression-triage dashboard for QA and release engineers, with a React and Vite frontend and a Node.js and Express backend. Added a two-stage LLM pipeline that reads test reports and explains why a run failed, replacing a manual hunt through Jenkins and Artifactory.",
       boxColor: "#f9e2af",
       delay: 0.1,
     },
@@ -38,7 +38,7 @@ export function Experience() {
       position: "Software Development Intern",
       date: "May 2025 - Aug 2025",
       description:
-        "Built a full-stack anonymous survey application that brought employee feedback in-house in place of an outside vendor, with React and TypeScript on the frontend and .NET Core and MySQL behind it.",
+        "Built a full-stack anonymous survey application that brought employee feedback in-house in place of an outside vendor, with a React and TypeScript frontend and a .NET Core and MySQL backend.",
       boxColor: "#a6e3a1",
       delay: 0.2,
     },

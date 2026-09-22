@@ -65,8 +65,8 @@ export function Projects() {
   ];
 
   return (
-    <div className="flex flex-col flex-1 max-w-md gap-3">
-      <h1 className="text-xl font-semibold text-[#cdd6f4]">Projects</h1>
+    <div className="flex flex-col flex-1 max-w-md gap-6">
+      <h1 className="-mb-3 text-xl font-semibold text-[#cdd6f4]">Projects</h1>
       {projects.map((project, index) => (
         <div key={index}>
           <h1 className="mb-1 font-semibold tracking-wider text-[#cdd6f4] whitespace-nowrap">
@@ -111,7 +111,7 @@ export function Projects() {
               </div>
             </BoxReveal>
           </h1>
-          <ul className="flex flex-wrap gap-1.5 mb-2" aria-label="Built with">
+          <ul className="flex flex-wrap gap-1.5 mt-3 mb-3" aria-label="Built with">
             {project.stack.map((tech) => (
               <li
                 key={tech}
