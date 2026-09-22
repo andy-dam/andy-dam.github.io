@@ -174,15 +174,17 @@ body {
   }
 }
 
-/* A frosted pane over the circuit. The warp behind it is done in the canvas,
-   which can displace pixels where CSS cannot. */
+/* A frosted pane over the circuit, in Catppuccin Mocha: base for the tint,
+   surface0 for the edge, crust for the shadow, and no saturation boost. The
+   warp behind it is done in the canvas, which can displace pixels where CSS
+   cannot. */
 @layer components {
   .glass {
-    background: rgba(24, 24, 37, 0.32);
-    backdrop-filter: blur(4px) saturate(140%);
-    -webkit-backdrop-filter: blur(4px) saturate(140%);
-    border: 1px solid rgba(226, 232, 255, 0.08);
-    box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.7);
+    background: rgba(30, 30, 46, 0.55); /* base #1e1e2e */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(49, 50, 68, 0.85); /* surface0 #313244 */
+    box-shadow: 0 20px 50px -24px rgba(17, 17, 27, 0.85); /* crust #11111b */
     animation: glass-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
@@ -205,7 +207,7 @@ body {
 
   @media (prefers-reduced-transparency: reduce) {
     .glass {
-      background: #181825;
+      background: #1e1e2e; /* base */
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
     }
