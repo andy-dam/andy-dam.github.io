@@ -24,7 +24,12 @@ interface Charge {
   /** Edges per second. */
   speed: number;
   hopsLeft: number;
+  /** Dots already passed, oldest first, for the fading tail. */
+  trail: Array<{ col: number; row: number }>;
 }
+
+/** Dots of tail kept behind a charge. */
+const TRAIL = 7;
 
 const BASE = "rgba(205, 214, 244, 0.18)";
 // Lavender #b4befe, the colour under the name in the header.
@@ -106,7 +111,8 @@ export function CircuitDots({
         step: Math.random() < 0.5 ? -1 : 1,
         progress: 0,
         speed: 1.1 + Math.random() * 1.4,
-        hopsLeft: 3 + Math.floor(Math.random() * 6),
+        hopsLeft: 5 + Math.floor(Math.random() * 8),
+        trail: [{ col, row }],
       });
     };
 
@@ -118,6 +124,8 @@ export function CircuitDots({
         else charge.row += charge.step;
         charge.hopsLeft -= 1;
         light(charge.col, charge.row);
+        charge.trail.push({ col: charge.col, row: charge.row });
+        if (charge.trail.length > TRAIL) charge.trail.shift();
         // A quarter turn now and then is what makes it read as a circuit.
         if (Math.random() < 0.35) {
           charge.axis = charge.axis === "x" ? "y" : "x";
@@ -136,16 +144,28 @@ export function CircuitDots({
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (base) ctx.drawImage(base, 0, 0, canvas.width / dpr, canvas.height / dpr);
 
+      // Everything lit is drawn additively, so crossing traces build up.
+      ctx.globalCompositeOperation = "lighter";
+
       for (const [key, value] of glow) {
         const [col, row] = key.split(",").map(Number);
-        ctx.fillStyle = `rgba(${LIT}, ${0.55 * value})`;
+        const x = col * spacing;
+        const y = row * spacing;
+        const halo = ctx.createRadialGradient(x, y, 0, x, y, spacing * 0.42 * value);
+        halo.addColorStop(0, `rgba(${LIT}, ${0.4 * value})`);
+        halo.addColorStop(1, `rgba(${LIT}, 0)`);
+        ctx.fillStyle = halo;
         ctx.beginPath();
-        ctx.arc(col * spacing, row * spacing, radius + 1.4 * value, 0, Math.PI * 2);
+        ctx.arc(x, y, spacing * 0.42 * value, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = `rgba(${LIT}, ${0.7 * value})`;
+        ctx.beginPath();
+        ctx.arc(x, y, radius + 1.2 * value, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      ctx.lineWidth = 1;
       ctx.lineCap = "round";
+      ctx.lineJoin = "round";
       for (const charge of charges) {
         const x = charge.col * spacing;
         const y = charge.row * spacing;
@@ -153,19 +173,41 @@ export function CircuitDots({
         const dy = charge.axis === "y" ? charge.step * spacing : 0;
         const hx = x + dx * charge.progress;
         const hy = y + dy * charge.progress;
-        const gradient = ctx.createLinearGradient(x, y, hx, hy);
-        gradient.addColorStop(0, `rgba(${TRACE}, 0)`);
-        gradient.addColorStop(1, `rgba(${TRACE}, 0.5)`);
-        ctx.strokeStyle = gradient;
+
+        // The tail: older segments thinner and fainter.
+        const tail = charge.trail;
+        for (let i = 1; i < tail.length; i++) {
+          const age = (i + 1) / tail.length;
+          ctx.strokeStyle = `rgba(${TRACE}, ${0.42 * age * age})`;
+          ctx.lineWidth = 0.6 + 0.9 * age;
+          ctx.beginPath();
+          ctx.moveTo(tail[i - 1].col * spacing, tail[i - 1].row * spacing);
+          ctx.lineTo(tail[i].col * spacing, tail[i].row * spacing);
+          ctx.stroke();
+        }
+
+        // The edge the head is crossing right now.
+        ctx.strokeStyle = `rgba(${TRACE}, 0.55)`;
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(hx, hy);
         ctx.stroke();
-        ctx.fillStyle = `rgba(${LIT}, 0.75)`;
+
+        const head = ctx.createRadialGradient(hx, hy, 0, hx, hy, spacing * 0.5);
+        head.addColorStop(0, `rgba(${LIT}, 0.55)`);
+        head.addColorStop(1, `rgba(${LIT}, 0)`);
+        ctx.fillStyle = head;
         ctx.beginPath();
-        ctx.arc(hx, hy, radius + 0.6, 0, Math.PI * 2);
+        ctx.arc(hx, hy, spacing * 0.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = `rgba(${LIT}, 0.95)`;
+        ctx.beginPath();
+        ctx.arc(hx, hy, radius + 1, 0, Math.PI * 2);
         ctx.fill();
       }
+
+      ctx.globalCompositeOperation = "source-over";
     };
 
     let frame = 0;
@@ -186,7 +228,7 @@ export function CircuitDots({
         if (!advance(charges[i], dt)) charges.splice(i, 1);
       }
       for (const [key, value] of glow) {
-        const next = value - dt * 0.8;
+        const next = value - dt * 0.45;
         if (next <= 0) glow.delete(key);
         else glow.set(key, next);
       }
