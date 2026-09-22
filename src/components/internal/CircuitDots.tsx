@@ -11,6 +11,8 @@ interface CircuitDotsProps {
   interval?: number;
   /** Most charges travelling at once. */
   maxCharges?: number;
+  /** Selector of a pane to bend the background behind, if there is one. */
+  warpTarget?: string;
   className?: string;
 }
 
@@ -53,6 +55,7 @@ export function CircuitDots({
   radius = 1,
   interval = 0.18,
   maxCharges = 26,
+  warpTarget,
   className,
 }: CircuitDotsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -278,6 +281,70 @@ export function CircuitDots({
       }
 
       ctx.globalCompositeOperation = "source-over";
+      warp();
+    };
+
+    // Bending the picture behind the pane. CSS cannot displace pixels, so the
+    // canvas does it: the strip of itself under the pane is copied out, then
+    // laid back down row by row, each row slid sideways along a slow wave.
+    const buffer = document.createElement("canvas");
+    let elapsed = 0;
+
+    const warp = () => {
+      if (!warpTarget) return;
+      const pane = document.querySelector(warpTarget);
+      if (!pane) return;
+      const box = pane.getBoundingClientRect();
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const amp = 7;
+      const x = Math.max(0, box.left - amp);
+      const y = Math.max(0, box.top);
+      const right = Math.min(w, box.right + amp);
+      const bottom = Math.min(h, box.bottom);
+      const width = right - x;
+      const height = bottom - y;
+      if (width <= 0 || height <= 0) return;
+
+      if (buffer.width !== Math.ceil(width * dpr) || buffer.height !== Math.ceil(height * dpr)) {
+        buffer.width = Math.ceil(width * dpr);
+        buffer.height = Math.ceil(height * dpr);
+      }
+      const bctx = buffer.getContext("2d");
+      if (!bctx) return;
+      bctx.setTransform(1, 0, 0, 1, 0, 0);
+      bctx.clearRect(0, 0, buffer.width, buffer.height);
+      bctx.drawImage(
+        canvas,
+        x * dpr,
+        y * dpr,
+        width * dpr,
+        height * dpr,
+        0,
+        0,
+        buffer.width,
+        buffer.height,
+      );
+
+      ctx.clearRect(x, y, width, height);
+      const strip = 4;
+      for (let sy = 0; sy < height; sy += strip) {
+        const slide =
+          amp * Math.sin(sy / 110 + elapsed * 0.35) +
+          amp * 0.45 * Math.sin(sy / 37 - elapsed * 0.22);
+        const tall = Math.min(strip, height - sy);
+        ctx.drawImage(
+          buffer,
+          0,
+          sy * dpr,
+          buffer.width,
+          tall * dpr,
+          x + slide,
+          y + sy,
+          width,
+          tall,
+        );
+      }
     };
 
     let frame = 0;
@@ -287,6 +354,7 @@ export function CircuitDots({
     const tick = (now: number) => {
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
+      elapsed += dt;
 
       sinceSpawn += dt;
       if (sinceSpawn > interval) {
@@ -336,7 +404,7 @@ export function CircuitDots({
       window.removeEventListener("resize", onResize);
       reduced.removeEventListener("change", onResize);
     };
-  }, [spacing, radius, interval, maxCharges]);
+  }, [spacing, radius, interval, maxCharges, warpTarget]);
 
   return (
     <canvas

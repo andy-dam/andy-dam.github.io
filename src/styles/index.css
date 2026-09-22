@@ -174,83 +174,22 @@ body {
   }
 }
 
-/* Liquid glass. The pane is translucent and blurred, never clear: Apple's
-   material shifts its own tint so the writing on it stays legible. What makes
-   it read as glass is the edge — a bright specular sliver along the top, a
-   thin lit rim, and a band inside that edge where the background is refracted
-   and brightened. */
+/* A frosted pane over the circuit. The warp behind it is done in the canvas,
+   which can displace pixels where CSS cannot. */
 @layer components {
   .glass {
-    --glass-rim: 16px;
-    background:
-      linear-gradient(
-        to bottom,
-        rgba(226, 232, 255, 0.1),
-        rgba(226, 232, 255, 0.03) 30%,
-        rgba(226, 232, 255, 0.05)
-      ),
-      rgba(24, 24, 37, 0.62);
-    backdrop-filter: blur(14px) saturate(175%);
-    -webkit-backdrop-filter: blur(14px) saturate(175%);
-    border: 1px solid rgba(226, 232, 255, 0.16);
-    box-shadow:
-      inset 0 1.5px 0 rgba(226, 232, 255, 0.5),
-      inset 0 -1px 0 rgba(226, 232, 255, 0.1),
-      inset 1px 0 0 rgba(226, 232, 255, 0.07),
-      inset -1px 0 0 rgba(226, 232, 255, 0.07),
-      0 16px 40px rgba(0, 0, 0, 0.45);
+    background: rgba(24, 24, 37, 0.55);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid rgba(226, 232, 255, 0.08);
+    box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.7);
     animation: glass-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  /* The lit rim. Gradients only: a backdrop-filter nested inside a filtered
-     element samples the pane's own tint in Chrome and paints a grey band, so
-     the edge is lit rather than resampled. */
-  .glass::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: var(--glass-rim);
-    box-sizing: border-box;
-    background:
-      linear-gradient(
-        160deg,
-        rgba(226, 232, 255, 0.13),
-        rgba(226, 232, 255, 0) 38%,
-        rgba(180, 190, 254, 0.09)
-      );
-    mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    pointer-events: none;
-  }
-
-  /* The specular sliver, brightest in the middle of the top edge. */
-  .glass::after {
-    content: "";
-    position: absolute;
-    inset-inline: 8%;
-    top: 0;
-    height: 1.5px;
-    border-radius: 2px;
-    background: linear-gradient(
-      to right,
-      transparent,
-      rgba(255, 255, 255, 0.75),
-      transparent
-    );
-    pointer-events: none;
   }
 
   @keyframes glass-in {
     from {
       opacity: 0;
-      transform: translateY(14px) scale(0.995);
+      transform: translateY(14px);
     }
     to {
       opacity: 1;
@@ -269,9 +208,6 @@ body {
       background: #181825;
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
-    }
-    .glass::before {
-      display: none;
     }
   }
 }

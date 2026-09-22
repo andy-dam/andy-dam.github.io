@@ -14,10 +14,14 @@ import { Footer } from "@/features/footer";
 function App() {
   return (
     <div className="relative flex flex-col w-full min-h-screen overflow-x-hidden">
-      <CircuitDots spacing={30} className="z-0 opacity-70 dark:opacity-50" />
+      <CircuitDots
+        spacing={30}
+        warpTarget=".glass"
+        className="z-0 opacity-70 dark:opacity-50"
+      />
       <main className="relative z-10 flex flex-col flex-1 text-zinc-700 dark:text-neutral-300">
         <article className="container relative max-w-3xl px-4 mx-auto mt-10 mb-10 sm:px-6 sm:mt-28 sm:mb-28">
-          <div className="glass relative overflow-hidden rounded-[28px] px-10 py-10 sm:px-16 sm:py-14">
+          <div className="glass relative overflow-hidden rounded-[28px] px-12 py-12 sm:px-20 sm:py-16">
           <div className="mb-12">
             <BlurFade delay={0} direction="up" blur="3px">
               <Header className="mb-6" />
